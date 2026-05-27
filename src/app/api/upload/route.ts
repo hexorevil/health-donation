@@ -4,6 +4,13 @@ import { NextRequest } from "next/server";
 
 export const runtime = "nodejs";
 
+if (typeof globalThis.DOMMatrix === "undefined") {
+  (globalThis as any).DOMMatrix = class DOMMatrix {};
+}
+if (typeof globalThis.Path2D === "undefined") {
+  (globalThis as any).Path2D = class Path2D {};
+}
+
 const TEXT_EXTS = new Set([
   "txt","md","markdown","rst","log","csv","tsv","json","jsonl","xml","yaml","yml",
   "toml","ini","cfg","conf","env","properties","html","htm","css","scss","sass","less",
