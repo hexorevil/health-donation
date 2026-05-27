@@ -55,10 +55,14 @@ export async function POST(req: NextRequest) {
     // ── PDF ──
     if (ext === "pdf" || file.type === "application/pdf") {
       try {
-        const { PDFParse } = await import("pdf-parse");
-        const parser = new PDFParse({ data: new Uint8Array(buffer) });
-        const data = await parser.getText();
-        content = data.text?.trim() ?? "";
+        const PDFParser = (await import("pdf2json")).default;
+        const pdfParser = new PDFParser(null, 1);
+        const data = await new Promise<string>((resolve, reject) => {
+          pdfParser.on("pdfParser_dataError", (errData: any) => reject(new Error(errData.parserError)));
+          pdfParser.on("pdfParser_dataReady", () => resolve(pdfParser.getRawTextContent()));
+          pdfParser.parseBuffer(buffer);
+        });
+        content = data?.trim() ?? "";
         if (!content) throw new Error("No text extracted from PDF");
         type = "pdf";
       } catch (pdfErr) {
