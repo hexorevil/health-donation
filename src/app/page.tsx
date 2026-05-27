@@ -474,7 +474,7 @@ function MessageBubble({ msg }: { msg: Message }) {
               <span style={{ fontFamily: "var(--mono)", fontSize: "0.6rem", color: modeColor, letterSpacing: "0.12em", textTransform: "uppercase" }}>AZMOKI · {MODE_META[msg.mode]?.label?.toUpperCase() ?? "CHAT"}</span>
             </div>
             <div className="prose">
-              <ReactMarkdown remarkPlugins={[remarkGfm]} components={{ pre: ({ children, ...props }: any) => ( <div style={{ position: "relative" }}> <pre {...props}>{children}</pre> <CopyButton text={String((children as React.ReactElement)?.props?.children ?? "")} /> </div> ) }}>
+              <ReactMarkdown remarkPlugins={[remarkGfm]} components={{ pre: ({ children, ...props }: any) => ( <div style={{ position: "relative" }}> <pre {...props}>{children}</pre> <CopyButton text={String((children as any)?.props?.children ?? "")} /> </div> ) }}>
                 {msg.content || "▍"}
               </ReactMarkdown>
             </div>
